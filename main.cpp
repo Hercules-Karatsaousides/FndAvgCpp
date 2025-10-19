@@ -2,7 +2,10 @@
 #include <iostream>
 #include <limits>
 #include <vector>
+#include <cstdio>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 
 using namespace std;
@@ -15,7 +18,8 @@ void input(double& var) {
 
 // Start of main
 int main() {
-    // Set console to UTF-8 (had problems with div symbol)
+    // Set console to UTF-8 (had problems with div symbol) and enable ANSI escape codes on Windows 10+ consoles
+#ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
@@ -27,6 +31,7 @@ int main() {
             SetConsoleMode(hOut, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
         }
     }
+#endif
 
     // Char variable used to input user choice
     // 1 = to default 5 variables
@@ -59,6 +64,7 @@ int main() {
     // If user chooses option 2 ask user for a custom amount of numbers and return their average
     // If user chooses anything else the program exits
     if (choice == '1') {
+        // Clear screen using ANSI escape codes (works when VT processing is enabled on Windows 10+)
         system("cls");
         cout<<"\033[1;32m"<<banner<<"\033[0m\n\n\n"<<endl;
         double a=0, b=0, c=0, d=0, e=0;
@@ -71,6 +77,7 @@ int main() {
     }
     else if (choice == '2') {
 
+        // Clear screen using ANSI escape codes (works when VT processing is enabled on Windows 10+)
         system("cls");
         cout<<"\033[1;32m"<<banner<<"\033[0m\n\n\n"<<endl;
 
@@ -86,6 +93,7 @@ int main() {
             cout<<"> ";
             cin>>custom;
             if (cin.fail() || custom <= 1 || custom > 100) {
+                // Clear screen using ANSI escape codes (works when VT processing is enabled on Windows 10+)
                 system("cls");
                 cout<<"\033[1;32m"<<banner<<"\033[0m\n\n\n"<<endl;
                 cout << "\033[31mInvalid input. Please enter a positive integer.\033[0m\n";
@@ -131,6 +139,6 @@ int main() {
     // Press any key to exit with cin ignore so the program doesn't exit on its own
     cout<<"\033[97mPress any key to exit...\033[0m"<<endl;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getchar();
+    std::getchar();
     return 0;
 }
